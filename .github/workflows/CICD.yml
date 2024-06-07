@@ -32,10 +32,12 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
 
-      - name: Test SSH Connection
+      - name: Debug SSH Connection
         run: |
           echo "Testing SSH connection..."
-          ssh -v -o StrictHostKeyChecking=no -o ConnectTimeout=30 app@${{ secrets.SERVER_HOST }} echo "SSH connection successful"
+          echo "${{ secrets.SERVER_SSH_KEY }}" > private_key
+          chmod 600 private_key
+          ssh -vvv -i private_key -o StrictHostKeyChecking=no -o ConnectTimeout=60 app@${{ secrets.SERVER_HOST }} echo "SSH connection successful"
 
       - name: Deploy to server
         if: success()
@@ -45,7 +47,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd artic-webshop
+            cd /path/to/your/project  # Update this to your actual project path
             git pull origin main
             npm ci
             npm run build
