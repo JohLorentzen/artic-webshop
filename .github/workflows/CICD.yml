@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd /path/to/your/project  # Update this to your actual project path
+            cd artic-webshop # Update this to your actual project path
             git pull origin main
             npm ci
             npm run build
