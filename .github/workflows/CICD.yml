@@ -53,9 +53,20 @@ jobs:
         run: |
           sshpass -p ${{ secrets.DEPLOY_PASSWORD }} scp -o StrictHostKeyChecking=no -r .next/* ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/.next
           sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << EOF
+            # Ensure Node.js and PM2 are installed
+            nvm install 18
+            nvm use 18
+            nvm alias default 18
+            npm install -g pm2
+
+            # Navigate to the deployment path
             cd ${{ secrets.DEPLOY_PATH }}
+            
+            # Install project dependencies and build the project
             npm install
             npm run build
+
+            # Restart or start the application using PM2
             pm2 restart nextjs-app || pm2 start npm --name "nextjs-app" -- start
             exit
           EOF
