@@ -35,7 +35,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && needs.build-and-test.result == 'success'
+    if: github.ref == 'refs/heads/main' && needs.build.result == 'success'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
