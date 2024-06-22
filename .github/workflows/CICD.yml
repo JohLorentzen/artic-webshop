@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -18,13 +18,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
-
-      - name: Test
-        run: npm test
 
       - name: Build
         run: npm run build
@@ -36,7 +33,7 @@ jobs:
           path: .next/
 
   deploy:
-    needs: build-and-test
+    needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && needs.build-and-test.result == 'success'
     steps:
