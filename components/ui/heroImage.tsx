@@ -1,7 +1,13 @@
-
 import Image from 'next/image';
 
-const HeroImage = ({ src, alt, title, subtitle }) => {
+interface HeroImageProps {
+  src: string;
+  alt: string;
+  title: string;
+  subtitle: string;
+}
+
+const HeroImage = ({ src, alt, title, subtitle }: HeroImageProps) => {
   return (
     <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', padding: '2rem' }}>
       <Image 
