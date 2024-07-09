@@ -54,6 +54,11 @@ jobs:
       - name: Install sshpass and rsync
         run: sudo apt-get install -y sshpass rsync
 
+      - name: Add SSH key to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+
       - name: Deploy to server
         run: |
           # Variables
