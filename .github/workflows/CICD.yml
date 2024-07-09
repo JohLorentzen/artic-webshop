@@ -21,7 +21,9 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
 
       - name: Build
         run: npm run build
@@ -52,7 +54,7 @@ jobs:
       - name: Deploy to server
         run: |
           sshpass -p ${{ secrets.DEPLOY_PASSWORD }} scp -o StrictHostKeyChecking=no -r .next/* ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/.next
-          sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << EOF
+          sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'EOF'
             # Install nvm
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
             export NVM_DIR="$HOME/.nvm"
@@ -74,14 +76,13 @@ jobs:
 
             # Navigate to the deployment path
             cd ${{ secrets.DEPLOY_PATH }}
-            
-            # Install project dependencies and build the project
+
+            # Install project dependencies
+            rm -rf node_modules package-lock.json
             npm install
-            npm run build
 
             # Restart or start the application using PM2
             pm2 restart nextjs-app || pm2 start npm --name "nextjs-app" -- start
-            exit
           EOF
       - name: Completed deployment message
         run: echo "Deployed app to server"
