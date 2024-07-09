@@ -69,11 +69,18 @@ jobs:
           SSH_PASS="${{ secrets.DEPLOY_PASSWORD }}"
 
           # Sync files to the server using rsync
+          echo "Starting rsync..."
           sshpass -p $SSH_PASS rsync -avz --delete --exclude='.git' --exclude='node_modules' $LOCAL_PROJECT_PATH/ $REMOTE_USER@$REMOTE_HOST:$REMOTE_PROJECT_PATH
+          echo "rsync completed."
 
           # Connect to the server to install dependencies and restart the application
+          echo "Connecting to server to install dependencies and restart application..."
           sshpass -p $SSH_PASS ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
             cd $REMOTE_PROJECT_PATH
+
+            # Debugging - List files in the app directory
+            echo "Listing files in the app directory on the server:"
+            ls -l app
 
             # Verify the CSS file is deployed
             if [ -f "app/globals.css" ]; then

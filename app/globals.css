@@ -106,7 +106,7 @@
 
   /* Home */
   .home {
-    
+    @apply flex flex-col 
   }
 
   .home-content {
