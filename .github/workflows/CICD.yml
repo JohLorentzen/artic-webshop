@@ -22,11 +22,14 @@ jobs:
 
       - name: Install dependencies
         run: |
+          npm cache clean --force
           rm -rf node_modules package-lock.json
           npm install
 
-      - name: Build
-        run: npm run build
+      - name: Build and Export
+        run: |
+          npm run build
+          npm run export
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v2
@@ -67,20 +70,16 @@ jobs:
           REMOTE_HOST="${{ secrets.DEPLOY_HOST }}"
           REMOTE_PROJECT_PATH="/var/www/kristofferlorentzen/artic-webshop"
           SSH_PASS="${{ secrets.DEPLOY_PASSWORD }}"
-
           # Sync files to the server using rsync
           echo "Starting rsync..."
           sshpass -p $SSH_PASS rsync -avz --delete --exclude='.git' --exclude='node_modules' $LOCAL_PROJECT_PATH/ $REMOTE_USER@$REMOTE_HOST:$REMOTE_PROJECT_PATH
           echo "rsync completed."
-
           # Connect to the server to install dependencies and restart the application
           echo "Connecting to server to install dependencies and restart application..."
           sshpass -p $SSH_PASS ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
             cd $REMOTE_PROJECT_PATH
-
             # Ensure npm and pm2 are installed and accessible
             export PATH="$HOME/.nvm/versions/node/v18.20.3/bin:$PATH"
-
             npm install
             pm2 restart nextjs-app || pm2 start npm --name "nextjs-app" -- start
           EOF
