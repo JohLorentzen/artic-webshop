@@ -32,7 +32,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: built-app
-          path: .next/
+          path: |
+            .next/
+            public/
 
   deploy:
     needs: build
@@ -46,7 +48,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: built-app
-          path: .next
+          path: .
 
       - name: Install sshpass
         run: sudo apt-get install -y sshpass
@@ -54,6 +56,7 @@ jobs:
       - name: Deploy to server
         run: |
           sshpass -p ${{ secrets.DEPLOY_PASSWORD }} scp -o StrictHostKeyChecking=no -r .next/* ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/.next
+          sshpass -p ${{ secrets.DEPLOY_PASSWORD }} scp -o StrictHostKeyChecking=no -r public/* ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/public
           sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'EOF'
             # Install nvm
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
