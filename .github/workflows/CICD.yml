@@ -1,4 +1,4 @@
- name: CI/CD Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
@@ -75,16 +75,24 @@ jobs:
 
           # Connect to the server to install dependencies and restart the application
           echo "Connecting to server to install dependencies and restart application..."
-          sshpass -p $SSH_PASS ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << EOF
+          sshpass -p $SSH_PASS ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
             cd $REMOTE_PROJECT_PATH
 
             # Debugging - List files in the app directory
             echo "Listing files in the app directory on the server:"
             ls -l app
 
+            # Verify the CSS file is deployed
+            if [ -f "app/globals.css" ]; then
+              echo "globals.css file exists."
+            else
+              echo "globals.css file is missing!"
+              exit 1
+            fi
+
             npm install
             pm2 restart nextjs-app || pm2 start npm --name "nextjs-app" -- start
-EOF
+          EOF
 
       - name: Completed deployment message
         run: echo "Deployed app to server"
