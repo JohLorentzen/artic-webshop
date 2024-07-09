@@ -10,12 +10,12 @@ interface HeroImageProps {
 const HeroImage = ({ src, alt, title, subtitle }: HeroImageProps) => {
   return (
     <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', padding: '2rem' }}>
-      <Image 
-        src={src} 
-        alt={alt} 
-        layout="fill" 
-        objectFit="cover"
-        quality={100} 
+      <Image
+        src="/icons/assets/hero-image.jpg"
+        fill
+        priority
+        alt='Hero Image'
+        style={{ objectFit: 'cover' }}
       />
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: '#fff', textAlign: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)', borderRadius: '1rem', padding: '2rem' }}>
         <h1 style={{ fontSize: '3rem', margin: 0 }}>{title}</h1>
