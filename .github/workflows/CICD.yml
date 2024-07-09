@@ -65,7 +65,7 @@ jobs:
           LOCAL_PROJECT_PATH="$(pwd)"
           REMOTE_USER="${{ secrets.DEPLOY_USER }}"
           REMOTE_HOST="${{ secrets.DEPLOY_HOST }}"
-          REMOTE_PROJECT_PATH="${{ secrets.DEPLOY_PATH }}"
+          REMOTE_PROJECT_PATH="/var/www/kristofferlorentzen/artic-webshop"
           SSH_PASS="${{ secrets.DEPLOY_PASSWORD }}"
 
           # Sync files to the server using rsync
@@ -77,6 +77,10 @@ jobs:
           echo "Connecting to server to install dependencies and restart application..."
           sshpass -p $SSH_PASS ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
             cd $REMOTE_PROJECT_PATH
+
+            # Ensure npm and pm2 are installed and accessible
+            export PATH="$HOME/.nvm/versions/node/v18.20.3/bin:$PATH"
+
             npm install
             pm2 restart nextjs-app || pm2 start npm --name "nextjs-app" -- start
           EOF
