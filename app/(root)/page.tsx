@@ -12,7 +12,7 @@ import {
 
 export default function Home() {
   return (
-    <div class="home">
+    <div className="home">
       <header>
         <Menubar>
           <MenubarMenu>
