@@ -6,24 +6,32 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "rsync -avz --exclude='node_modules' --exclude='.git' . user@server:/var/www/kristofferlorentzen/artic-webshop"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@eslint/config-array": "^0.17.0",
+    "@eslint/object-schema": "^2.1.4",
     "@mui/icons-material": "^5.16.0",
     "@mui/material": "^5.16.0",
     "@radix-ui/react-menubar": "^1.0.4",
     "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "glob": "^11.0.0",
     "lucide-react": "^0.383.0",
     "next": "14.2.3",
     "postcss-apply": "^0.12.0",
     "react": "^18",
     "react-dom": "^18",
+    "rimraf": "^6.0.0",
+    "string-width-cjs": "^5.1.1",
+    "strip-ansi-cjs": "^8.0.0",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "wrap-ansi-cjs": "^8.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
