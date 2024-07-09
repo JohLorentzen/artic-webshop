@@ -1,54 +1,87 @@
-name: Deploy Next.js site to Ubuntu Server
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: ["main"]
-  workflow_dispatch:
-
-permissions:
-  contents: read
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: "20"
-          cache: 'npm'
+          node-version: '18'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Build with Next.js
+      - name: Build
         run: npm run build
 
-      - name: Add SSH Key
-        uses: webfactory/ssh-agent@v0.5.3
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v2
         with:
-          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+          name: built-app
+          path: .next/
 
-      - name: Debug SSH Connection
-        run: |
-          echo "Testing SSH connection..."
-          echo "${{ secrets.SERVER_SSH_KEY }}" > private_key
-          chmod 600 private_key
-          ssh -vvv -i private_key -o StrictHostKeyChecking=no -o ConnectTimeout=60 app@${{ secrets.SERVER_HOST }} echo "SSH connection successful"
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && needs.build.result == 'success'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: built-app
+          path: .next
+
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
 
       - name: Deploy to server
-        if: success()
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd artic-webshop # Update this to your actual project path
-            git pull origin main
-            npm ci
+        run: |
+          sshpass -p ${{ secrets.DEPLOY_PASSWORD }} scp -o StrictHostKeyChecking=no -r .next/* ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/.next
+          sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << EOF
+            # Install nvm
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            # Install and use Node.js 18
+            nvm install 18
+            nvm use 18
+            nvm alias default 18
+
+            # Configure npm to use user directory for global installs
+            mkdir -p ~/.npm-global
+            npm config set prefix '~/.npm-global'
+            export PATH=~/.npm-global/bin:$PATH
+            source ~/.profile
+
+            # Install PM2 globally
+            npm install -g pm2
+
+            # Navigate to the deployment path
+            cd ${{ secrets.DEPLOY_PATH }}
+            
+            # Install project dependencies and build the project
+            npm install
             npm run build
-            pm2 restart nextjs-app
+
+            # Restart or start the application using PM2
+            pm2 restart nextjs-app || pm2 start npm --name "nextjs-app" -- start
+            exit
+          EOF
+      - name: Completed deployment message
+        run: echo "Deployed app to server"
