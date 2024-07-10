@@ -60,6 +60,10 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
 
+      - name: Set permissions on the server
+        run: |
+          sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} 'sudo chown -R ${{ secrets.DEPLOY_USER }}:www-data /var/www/kristofferlorentzen && sudo chmod -R 775 /var/www/kristofferlorentzen'
+
       - name: Deploy to server
         run: |
           # Variables
@@ -70,7 +74,7 @@ jobs:
           SSH_PASS="${{ secrets.DEPLOY_PASSWORD }}"
           # Sync files to the server using rsync with increased verbosity and timeout
           echo "Starting rsync..."
-          sshpass -p $SSH_PASS rsync -avz --timeout=600 --delete --exclude='.git' --exclude='node_modules' --exclude='.next/cache' $LOCAL_PROJECT_PATH/ $REMOTE_USER@$REMOTE_HOST:$REMOTE_PROJECT_PATH
+          sshpass -p $SSH_PASS rsync -avz --timeout=600 --delete --exclude='.git' --exclude='node_modules' --exclude='.next/cache' --no-perms --omit-dir-times $LOCAL_PROJECT_PATH/ $REMOTE_USER@$REMOTE_HOST:$REMOTE_PROJECT_PATH
           echo "rsync completed."
           # Connect to the server to install dependencies and restart the application
           echo "Connecting to server to install dependencies and restart application..."
