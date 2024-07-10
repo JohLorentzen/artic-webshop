@@ -1,8 +1,8 @@
 export const homePageText = {
     heroText: "Kristoffer Lorentzen",
-    subText: "Opplev den artiske naturen gjennom min linse",
+    subText: "Opplev den arktiske naturen gjennom min linse",
     homeContentText: "Oppnå øynene dine",
-    heroAltText: "Landingsbilde, av StorNappsTinden i Lofoten",
+    heroAltText: "Landingsbilde, av Stornappstinden i Lofoten",
     contentTitle: "Jeg fanger de magiske øyeblikkene for deg", 
     contentText: "Nordlyset over Lofoten er en av de mest spektakulære naturopplevelsene du kan få i Norge. Det er en opplevelse som er vanskelig å beskrive med ord, men noe lettere med et foto.", 
     contentImageAlt: "Nordlyset over Lofoten",
