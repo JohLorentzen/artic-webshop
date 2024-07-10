@@ -60,6 +60,10 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
 
+      - name: Set permissions on the server
+        run: |
+          sshpass -p ${{ secrets.DEPLOY_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} 'sudo chown -R ${{ secrets.DEPLOY_USER }}:www-data /var/www/kristofferlorentzen && sudo chmod -R 775 /var/www/kristofferlorentzen'
+
       - name: Deploy to server
         run: |
           # Variables
