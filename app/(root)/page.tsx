@@ -2,6 +2,9 @@
 
 import HeroImage from '@/components/ui/heroImage';
 import Footer from '@/components/ui/footer';
+import Content from '@/components/ui/content';
+import {homePageText} from '@/constants/text.no'
+import {linkText} from '@/constants/text.no'
 import {
   Menubar,
   MenubarMenu,
@@ -9,6 +12,7 @@ import {
   MenubarContent,
   MenubarItem,
 } from '@/components/ui/menubar';
+ 
 
 export default function Home() {
   return (
@@ -16,33 +20,43 @@ export default function Home() {
       <header>
         <Menubar>
           <MenubarMenu>
-            <MenubarTrigger>Portfolio</MenubarTrigger>
+            <MenubarTrigger>{linkText.portifolio}</MenubarTrigger>
             <MenubarContent>
-              <MenubarItem>Nature</MenubarItem>
-              <MenubarItem>People</MenubarItem>
-              <MenubarItem>Cars</MenubarItem>
+              <MenubarItem>{linkText.subPortifolio[0]}</MenubarItem>
+              <MenubarItem>{linkText.subPortifolio[1]}</MenubarItem>
+              <MenubarItem>{linkText.subPortifolio[2]}</MenubarItem>
             </MenubarContent>
           </MenubarMenu>
           <MenubarMenu>
-            <MenubarTrigger>Shop</MenubarTrigger>
+            <MenubarTrigger>{linkText.shop}</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem>{linkText.subShop[0]}</MenubarItem>
+              <MenubarItem>{linkText.subShop[1]}</MenubarItem>
+              <MenubarItem>{linkText.subShop[2]}</MenubarItem>
+            </MenubarContent>
           </MenubarMenu>
           <MenubarMenu>
-            <MenubarTrigger>About Me</MenubarTrigger>
+            <MenubarTrigger>{linkText.aboutMe}</MenubarTrigger>
             <MenubarContent>
-              <MenubarItem>My Past</MenubarItem>
-              <MenubarItem>Me Now</MenubarItem>
-              <MenubarItem>Contact Me</MenubarItem>
+              <MenubarItem>{linkText.subAboutMe[0]}</MenubarItem>
+              <MenubarItem>{linkText.subAboutMe[1]}</MenubarItem>
+              <MenubarItem>{linkText.subAboutMe[2]}</MenubarItem>
             </MenubarContent>
           </MenubarMenu>
         </Menubar>
-      </header>
+      </header> 
       <main>
         <HeroImage 
-          src="/icons/assets/hero-image.jpg" 
-          alt="Hero Image"
-          title="Kristoffer Lorentzen"
-          subtitle="Opplev den artiske naturen gjennom min linse"
+          src="/icons/assets/hero-image.jpeg" 
+          alt={homePageText.heroAltText}
+          title={homePageText.heroText}
+          subtitle={homePageText.subText}
         />
+        <Content 
+        src="/icons/assets/northernLights.jpeg"
+        alt={homePageText.contentImageAlt}
+        title={homePageText.contentTitle}
+        text={homePageText.contentText}/>
       </main>
       <footer>
         <Footer />

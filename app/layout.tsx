@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Kristoffer Lorentzen",
   description: "Personal website of Kristoffer Lorentzen, for contact and selling of photos.",
   icons: {
-    icon:'/icons/logo.svg'
+    icon:'/icons/enhanced_logo.svg'
   }
 };
 
