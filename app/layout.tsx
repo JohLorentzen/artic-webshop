@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Kristoffer Lorentzen",
-  description: "Personal website of Kristoffer Lorentzen, for contact and selling of photos.",
+  title: 'Kristoffer Lorentzen',
+  description:
+    'Personal website of Kristoffer Lorentzen, for contact and selling of photos.',
   icons: {
-    icon:'/icons/enhanced_logo.svg'
-  }
+    icon: '/icons/enhanced_logo.svg',
+  },
 };
 
 export default function RootLayout({
