@@ -8,7 +8,7 @@ interface ContentImageProps {
 const ContentImage = ({ src, alt }: ContentImageProps) => {
   return (
     <div>
-      <Image src={src} alt={alt} priority width={500} height={300} />
+      <Image src={src} alt={alt} priority width={800} height={500} />
     </div>
   );
 };

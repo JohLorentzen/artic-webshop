@@ -7,6 +7,7 @@ export const homePageText = {
   contentText:
     'Nordlyset over Lofoten er en av de mest spektakulære naturopplevelsene du kan få i Norge. Det er en opplevelse som er vanskelig å beskrive med ord, men noe lettere med et foto.',
   contentImageAlt: 'Nordlyset over Lofoten',
+  contentText2: 'Få Lofotens røffe og nydelige natur inn på veggen din!',
 };
 export const linkText = {
   portifolio: 'Portfolio',

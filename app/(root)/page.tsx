@@ -1,5 +1,3 @@
-// pages/index.js
-
 import HeroImage from '@/components/ui/heroImage';
 import Footer from '@/components/ui/footer';
 import Content from '@/components/ui/content';
@@ -16,9 +14,9 @@ import {
 
 export default function Home() {
   return (
-    <div className="home">
-      <header>
-        <Menubar>
+    <div className=" flex flex-col min-h-screen">
+      <header className="bg-customBlueDark p-4">
+        <Menubar className="container mx-auto">
           <MenubarMenu>
             <MenubarTrigger>{linkText.portifolio}</MenubarTrigger>
             <MenubarContent>
@@ -45,37 +43,47 @@ export default function Home() {
           </MenubarMenu>
         </Menubar>
       </header>
-      <main>
+      <main className="flex-1">
         <HeroImage
           src="/icons/assets/hero-image.jpeg"
           alt={homePageText.heroAltText}
           title={homePageText.heroText}
           subtitle={homePageText.subText}
         />
-        <Content className="pb-24 pt-10 lg:grid lg-grid-cols-3 sm:pb-32 lg:gap-x-0 xl-gap-x-8 lg:pt-24 xl:pt-32 lg:pb-52">
-          <div>
-            <div className="flex h-screen bg-customBlueDark bg-[url('/icons/peaks.svg')] bg-cover bg-center p-6">
-              <div className="flex-1 flex items-center justify-center">
-                <div className="glassmorphism p-8 rounded-lg shadow-lg text-center">
-                  <h2 className="text-customOrange text-4xl font-bold mb-4">
-                    {homePageText.contentTitle}
-                  </h2>
-                  <p className="border-customGrey p-4 text-customWhite text-xl font-bold">
-                    {homePageText.contentText}
-                  </p>
-                </div>
-              </div>
-              <div className="flex-1 flex items-center justify-center">
-                <div className="transform rotate-3 transition-transform duration-500 hover:rotate-0 rounded-lg shadow-lg">
-                  <ContentImage
-                    src="/icons/assets/northernLights.jpeg"
-                    alt={homePageText.contentImageAlt}
-                  />
-                </div>
+        <section className="bg-customBlueDark bg-[url('/icons/peaks.svg')] bg-cover bg-center py-16 min-h-screen">
+          <Content className="container mx-auto pt-32 pb-54 grid lg:grid-cols-2 gap-8">
+            <div className="flex flex-col justify-center">
+              <div className="glassmorphism p-8 rounded-lg shadow-lg text-center">
+                <h2 className="text-customOrange text-4xl font-bold mb-4">
+                  {homePageText.contentTitle}
+                </h2>
+                <p className=" p-4 text-customWhite text-xl font-bold">
+                  {homePageText.contentText}
+                </p>
               </div>
             </div>
+            <div className="flex items-center justify-center ">
+              <ContentImage
+                src="/icons/assets/northernLights.jpeg"
+                alt={homePageText.contentImageAlt}
+              />
+            </div>
+          </Content>
+        </section>
+        <section className="bg-customBlueDark bg-[url('/icons/waves.svg')] bg-cover bg-center py-16 min-h-screen">
+          <div className="container mx-auto flex justify-center items-center h-full">
+            <Content className="bg-customWhite p-8 rounded-lg shadow-lg lg:w-2/3 text-center">
+              <div className="flex flex-col justify-center">
+                <h1 className="p-4 text-customBlueDark text-2xl font-bold rounded-lg">
+                  {homePageText.contentText2}
+                </h1>
+                <button className="bg-customOrange text-customWhite p-2 rounded-lg mt-4">
+                  {linkText.shop}
+                </button>
+              </div>
+            </Content>
           </div>
-        </Content>
+        </section>
       </main>
       <footer>
         <Footer />

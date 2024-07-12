@@ -1,5 +1,5 @@
 import React from 'react';
-import ContentImage from './contentImage';
+
 import { cn } from '@/lib/utils';
 
 interface ContentProps {
@@ -11,7 +11,7 @@ const Content: React.FC<ContentProps> = ({ className, children }) => {
   return (
     <div
       className={cn(
-        'h-full mx-auto w-full max-w-screen-xl px-2.5 md:px-20 bg-customDarkBlue',
+        'bg-color-customDarkBlue h-full mx-auto w-full max-w-screen-xl px-2.5 md:px-20',
         className
       )}
     >

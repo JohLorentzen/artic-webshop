@@ -21,7 +21,7 @@
 }
 
 .glassmorphism {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(13, 12, 12, 0.436);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
